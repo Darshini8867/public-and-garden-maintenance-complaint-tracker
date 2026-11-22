@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Park & Garden Complaint Tracker</title>
 
 <style>
@@ -12,123 +14,161 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background: #f0f7f0;
-    color: #263b2b;
+    background: #f4f8f3;
+    color: #333;
+    line-height: 1.6;
 }
 
 header {
     background: #176b3a;
     color: white;
-    padding: 22px;
+    padding: 20px;
     text-align: center;
 }
 
 header h1 {
-    font-size: 27px;
+    margin-bottom: 8px;
 }
 
 nav {
-    background: #104d2a;
-    padding: 15px;
+    background: #10552d;
+    padding: 12px;
     text-align: center;
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    margin: 12px;
+    margin: 0 15px;
     font-weight: bold;
 }
 
+nav a:hover {
+    text-decoration: underline;
+}
+
 .hero {
+    min-height: 300px;
+    background: linear-gradient(
+        rgba(0, 70, 25, 0.65),
+        rgba(0, 70, 25, 0.65)
+    ), url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e")
+    center/cover;
+
+    color: white;
     text-align: center;
-    padding: 55px 20px;
-    background: linear-gradient(120deg, #c7edc7, #e6f5df);
+    padding: 85px 20px;
 }
 
 .hero h2 {
-    font-size: 32px;
+    font-size: 35px;
     margin-bottom: 15px;
-    color: #176b3a;
 }
 
 .hero p {
-    font-size: 17px;
-    line-height: 1.6;
+    font-size: 18px;
 }
 
 .container {
-    max-width: 750px;
-    margin: 30px auto;
+    max-width: 850px;
+    margin: 35px auto;
     padding: 25px;
     background: white;
     border-radius: 12px;
-    box-shadow: 0 3px 12px #00000015;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
 }
 
-h2 {
+.container h2 {
     color: #176b3a;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 label {
     display: block;
-    margin: 13px 0 7px;
+    margin-top: 15px;
     font-weight: bold;
 }
 
 input, select, textarea {
     width: 100%;
     padding: 12px;
-    border: 1px solid #bbb;
+    margin-top: 7px;
+    border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 15px;
+}
+
+textarea {
+    resize: vertical;
 }
 
 button {
     background: #176b3a;
     color: white;
-    padding: 12px 20px;
+    padding: 12px 22px;
     border: none;
     border-radius: 6px;
+    margin-top: 20px;
     cursor: pointer;
-    margin-top: 15px;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 button:hover {
-    background: #104d2a;
+    background: #10552d;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#message {
+    margin-top: 15px;
+    font-weight: bold;
 }
 
 .complaint {
-    background: #f0f7f0;
-    padding: 15px;
-    margin: 12px 0;
-    border-radius: 8px;
+    background: #eaf5ec;
     border-left: 5px solid #176b3a;
+    padding: 18px;
+    margin-top: 20px;
+    border-radius: 6px;
+    overflow-wrap: anywhere;
 }
 
-.complaint p {
-    margin: 7px 0;
+.complaint h3 {
+    color: #176b3a;
+    margin-bottom: 10px;
 }
 
 footer {
-    background: #104d2a;
+    background: #10552d;
     color: white;
     text-align: center;
     padding: 20px;
-    margin-top: 35px;
+    margin-top: 40px;
 }
 
-@media(max-width:600px) {
-    header h1 {
-        font-size: 21px;
-    }
+@media(max-width: 600px) {
     nav a {
         display: inline-block;
-        margin: 7px;
+        margin: 5px 8px;
+    }
+
+    .hero h2 {
+        font-size: 26px;
+    }
+
+    .container {
+        margin: 20px 12px;
+        padding: 18px;
     }
 }
 </style>
@@ -137,7 +177,7 @@ footer {
 <body>
 
 <header>
-    <h1>🌳 Green Park & Garden Care</h1>
+    <h1>Green Park & Garden Care</h1>
     <p>Public Park and Garden Maintenance Complaint Tracker</p>
 </header>
 
@@ -148,305 +188,399 @@ footer {
 </nav>
 
 <section class="hero" id="home">
-    <h2>Keep Our Parks Clean and Green!</h2>
+    <h2>Keep Our Parks Clean and Green</h2>
     <p>
-        Help us maintain beautiful public parks and gardens.
-        Report problems and track your complaints easily.
+        Report park and garden problems easily.
+        Help us create a cleaner and greener environment.
     </p>
 </section>
 
+<!-- COMPLAINT FORM -->
+
 <section class="container" id="complaint">
-    <h2>📝 Submit a Complaint</h2>
+
+    <h2>Submit a Complaint</h2>
 
     <form id="complaintForm">
 
-        <label>Your Name</label>
-        <input type="text" id="name" required
-        placeholder="Enter your name">
+        <label for="name">Your Name</label>
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter your name"
+            required
+        >
 
-        <label>Park Name / Location</label>
-        <input type="text" id="location" required
-        placeholder="Enter park name or location">
+        <label for="location">Park / Garden Location</label>
+        <input
+            type="text"
+            id="location"
+            placeholder="Enter park or garden location"
+            required
+        >
 
-        <label>Complaint Category</label>
+        <label for="category">Complaint Category</label>
+
         <select id="category" required>
-            <option value="">Select complaint</option>
-            <option>Garbage Disposal</option>
-            <option>Damaged Playground Equipment</option>
-            <option>Broken Benches</option>
-            <option>Water Leakage</option>
-            <option>Damaged Plants</option>
-            <option>Unclean Garden</option>
-            <option>Broken Street Lights</option>
-            <option>Other</option>
+            <option value="">Select complaint category</option>
+            <option value="Garbage Problem">Garbage Problem</option>
+            <option value="Damaged Equipment">Damaged Equipment</option>
+            <option value="Water Problem">Water Problem</option>
+            <option value="Broken Lights">Broken Lights</option>
+            <option value="Plant Maintenance">Plant Maintenance</option>
+            <option value="Other">Other</option>
         </select>
 
-        
-<label>Upload Complaint Photo</label>
-<input type="file" id="photo" accept="image/jpeg,image/png,image/webp">
+        <label for="description">Complaint Description</label>
 
-<label>Upload Complaint Video</label>
-<input type="file" id="video" accept="video/mp4,video/webm">
+        <textarea
+            id="description"
+            rows="4"
+            placeholder="Describe your complaint"
+            required
+        ></textarea>
 
+        <label for="photo">Upload Complaint Photo (Optional)</label>
+        <input
+            type="file"
+            id="photo"
+            accept="image/jpeg,image/png,image/webp"
+        >
 
-        <label>Describe the Problem</label>
-        <textarea id="description" rows="4"
-        required placeholder="Explain the problem"></textarea>
+        <label for="video">Upload Complaint Video (Optional)</label>
+        <input
+            type="file"
+            id="video"
+            accept="video/mp4,video/webm"
+        >
 
-        <button type="submit">Submit Complaint</button>
+        <button type="submit" id="submitButton">
+            Submit Complaint
+        </button>
+
+        <p id="message" aria-live="polite"></p>
 
     </form>
-    <p id="message"></p>
+
 </section>
+
+<!-- TRACK COMPLAINT -->
 
 <section class="container" id="track">
-    <h2>🔍 Track Complaints</h2>
 
-    <input type="text" id="searchId"
-    placeholder="Enter your complaint ID">
+    <h2>Track Your Complaint</h2>
 
-    <button onclick="trackComplaint()">Track Complaint</button>
+    <label for="searchId">Enter Complaint ID</label>
 
-    <div id="result"></div>
-</section>
+    <input
+        type="text"
+        id="searchId"
+        placeholder="Example: PARK123456789"
+    >
 
-<section class="container">
-    <h2>📋 Admin Dashboard</h2>
-    <p>View submitted complaints and update their status.</p>
-    <div id="complaintList"></div>
+    <button type="button" onclick="trackComplaint()">
+        Track Complaint
+    </button>
+
+    <div id="result" aria-live="polite"></div>
+
 </section>
 
 <footer>
     <p>© 2026 Green Park & Garden Care</p>
-    <p>Working Together for a Cleaner and Greener Environment 🌱</p>
+    <p>Working Together for Clean and Green Parks</p>
 </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- SUPABASE LIBRARY -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-let complaints = JSON.parse(
-    
-const SUPABASE_URL = "https://mtsivbewuevolcvmeuxz.supabase.co/rest/v1/";
+// SUPABASE CONNECTION
+
+const SUPABASE_URL = "https://mtsivbewuevolcvmeuxz.supabase.co";
+
 const SUPABASE_KEY = "sb_publishable_gm88pauw1IXNhdOTgL7IUQ_2lBntGF1";
 
-const db = supabase.createClient(
+const db = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
+
+
+// SUBMIT COMPLAINT
 
 document.getElementById("complaintForm")
 .addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
+    const form = this;
+
     const message = document.getElementById("message");
+
+    const submitButton = document.getElementById("submitButton");
+
+    submitButton.disabled = true;
+
     message.textContent = "Submitting complaint...";
 
     const photo = document.getElementById("photo").files[0];
+
     const video = document.getElementById("video").files[0];
 
     const maxSize = 50 * 1024 * 1024;
 
-    if (photo && (!photo.type.startsWith("image/") ||
-                  photo.size > maxSize)) {
-        message.textContent = "Please select a valid photo under 50 MB.";
+    // CHECK PHOTO
+
+    if (photo && (
+        !["image/jpeg", "image/png", "image/webp"].includes(photo.type)
+        || photo.size > maxSize
+    )) {
+
+        message.textContent =
+            "Select a JPG, PNG or WEBP photo under 50 MB.";
+
+        submitButton.disabled = false;
+
         return;
     }
 
-    if (video && (!video.type.startsWith("video/") ||
-                  video.size > maxSize)) {
-        message.textContent = "Please select a valid video under 50 MB.";
+    // CHECK VIDEO
+
+    if (video && (
+        !["video/mp4", "video/webm"].includes(video.type)
+        || video.size > maxSize
+    )) {
+
+        message.textContent =
+            "Select an MP4 or WEBM video under 50 MB.";
+
+        submitButton.disabled = false;
+
         return;
     }
 
     const id = "PARK" + Date.now();
+
     let photoPath = null;
+
     let videoPath = null;
 
     try {
+
+        // UPLOAD PHOTO
+
         if (photo) {
-            const path = id + "/photo-" + photo.name;
+
+            const extension = photo.name.split(".").pop().toLowerCase();
+
+            photoPath = id + "/photo-" +
+                crypto.randomUUID() + "." + extension;
 
             const { error } = await db.storage
                 .from("park-complaints")
-                .upload(path, photo);
+                .upload(photoPath, photo);
 
             if (error) throw error;
-            photoPath = path;
         }
+
+
+        // UPLOAD VIDEO
 
         if (video) {
-            const path = id + "/video-" + video.name;
+
+            const extension = video.name.split(".").pop().toLowerCase();
+
+            videoPath = id + "/video-" +
+                crypto.randomUUID() + "." + extension;
 
             const { error } = await db.storage
                 .from("park-complaints")
-                .upload(path, video);
+                .upload(videoPath, video);
 
             if (error) throw error;
-            videoPath = path;
         }
 
+
+        // SAVE COMPLAINT DETAILS
+
         const complaint = {
+
             id: id,
-            name: document.getElementById("name").value,
-            location: document.getElementById("location").value,
+
+            name: document.getElementById("name").value.trim(),
+
+            location: document.getElementById("location").value.trim(),
+
             category: document.getElementById("category").value,
-            description: document.getElementById("description").value,
+
+            description: document.getElementById("description").value.trim(),
+
             photo_url: photoPath,
+
             video_url: videoPath,
+
             status: "Pending"
         };
+
 
         const { error } = await db
             .from("complaints")
             .insert([complaint]);
 
         if (error) throw error;
-        message.textContent =
-    "Complaint submitted successfully! Your ID is: " + id;
 
-this.reset();
 
-document.getElementById("searchId").value = id;
+        // SHOW SUCCESS MESSAGE
 
-document.getElementById("result").innerHTML =
-    "<div class='complaint'>" +
-    "<h3>Complaint Submitted Successfully!</h3>" +
-    "<p><b>Complaint ID:</b> " + id + "</p>" +
-    "<p><b>Status:</b> Pending</p>" +
-    "</div>";
-
-document.getElementById("track").scrollIntoView({
-    behavior: "smooth"
-});
+        form.reset();
 
         message.textContent =
-            "Complaint submitted successfully! Your ID is: " + id;
+            "Complaint submitted successfully!";
 
-        this.reset();
-        
 
-    } catch (error) {
-        console.error(error);
-        message.textContent =
-            "Submission failed. Please try again.";
+        // SHOW COMPLAINT ID
+
+        document.getElementById("searchId").value = id;
+
+        const result = document.getElementById("result");
+
+        result.replaceChildren();
+
+        const box = document.createElement("div");
+
+        box.className = "complaint";
+
+        const heading = document.createElement("h3");
+
+        heading.textContent = "Complaint Submitted Successfully!";
+
+        const idText = document.createElement("p");
+
+        idText.textContent = "Complaint ID: " + id;
+
+        const statusText = document.createElement("p");
+
+        statusText.textContent = "Status: Pending";
+
+        const note = document.createElement("p");
+
+        note.textContent =
+            "Please save your complaint ID to track it later.";
+
+        box.append(heading, idText, statusText, note);
+
+        result.appendChild(box);
+
+
+        // MOVE TO TRACKING SECTION
+
+        document.getElementById("track").scrollIntoView({
+            behavior: "smooth"
+        });
+
     }
-});
 
-    localStorage.getItem("complaints") || "[]"
-);
+    catch (error) {
 
-function saveComplaints() {
-    localStorage.setItem(
-        "complaints",
-        JSON.stringify(complaints)
-    );
-}
+        console.error("Complaint error:", error);
 
-document.getElementById("complaintForm")
-.addEventListener("submit", function(event) {
+        message.textContent =
+            "Submission failed: " + error.message;
 
-    event.preventDefault();
-
-    let complaint = {
-        id: "PARK" + Date.now(),
-        name: document.getElementById("name").value,
-        location: document.getElementById("location").value,
-        category: document.getElementById("category").value,
-        description: document.getElementById("description").value,
-        status: "Pending"
-    };
-
-    complaints.push(complaint);
-    saveComplaints();
-
-    document.getElementById("message").innerHTML =
-        "Complaint submitted successfully! Your ID is: " +
-        complaint.id;
-
-    this.reset();
-    displayComplaints();
-});
-
-function trackComplaint() {
-
-    let id = document.getElementById("searchId").value.trim();
-
-    let complaint = complaints.find(
-        c => c.id === id
-    );
-
-    let result = document.getElementById("result");
-
-    if (complaint) {
-        result.innerHTML = `
-            <div class="complaint">
-                <p><b>Complaint ID:</b> ${complaint.id}</p>
-                <p><b>Location:</b> ${complaint.location}</p>
-                <p><b>Category:</b> ${complaint.category}</p>
-                <p><b>Status:</b> ${complaint.status}</p>
-            </div>
-        `;
-    } else {
-        result.innerHTML =
-            "<p>Complaint not found. Please check your ID.</p>";
     }
-}
 
-function displayComplaints() {
+    finally {
 
-    let list = document.getElementById("complaintList");
+        submitButton.disabled = false;
 
-    if (complaints.length === 0) {
-        list.innerHTML = "<p>No complaints submitted yet.</p>";
+    }
+
+});
+
+
+// TRACK COMPLAINT
+
+async function trackComplaint() {
+
+    const id = document.getElementById("searchId").value.trim();
+
+    const result = document.getElementById("result");
+
+    if (!id) {
+
+        result.textContent = "Please enter your complaint ID.";
+
         return;
     }
 
-    list.innerHTML = "";
+    result.textContent = "Checking complaint...";
 
-    complaints.forEach((c, index) => {
 
-        let div = document.createElement("div");
-        div.className = "complaint";
+    // GET COMPLAINT STATUS FROM SUPABASE
 
-        let details = document.createElement("div");
-        details.textContent =
-            "ID: " + c.id +
-            " | Name: " + c.name +
-            " | Location: " + c.location +
-            " | Category: " + c.category +
-            " | Problem: " + c.description;
+    const { data, error } = await db.rpc(
+        "track_complaint",
+        { p_id: id }
+    );
 
-        let status = document.createElement("p");
-        status.textContent = "Status: " + c.status;
 
-        let select = document.createElement("select");
+    if (error) {
 
-        ["Pending", "In Progress", "Resolved"].forEach(s => {
-            let option = document.createElement("option");
-            option.value = s;
-            option.textContent = s;
-            select.appendChild(option);
-        });
+        console.error(error);
 
-        select.value = c.status;
+        result.textContent =
+            "Unable to track complaint: " + error.message;
 
-        select.addEventListener("change", function() {
-            complaints[index].status = this.value;
-            saveComplaints();
-            displayComplaints();
-        });
+        return;
+    }
 
-        div.appendChild(details);
-        div.appendChild(status);
-        div.appendChild(select);
 
-        list.appendChild(div);
+    if (!data || data.length === 0) {
+
+        result.textContent =
+            "Complaint not found. Please check your ID.";
+
+        return;
+    }
+
+
+    const complaint = data[0];
+
+    result.replaceChildren();
+
+    const box = document.createElement("div");
+
+    box.className = "complaint";
+
+    const details = [
+
+        ["Complaint ID", complaint.complaint_id],
+
+        ["Park Location", complaint.park_location],
+
+        ["Category", complaint.complaint_category],
+
+        ["Current Status", complaint.complaint_status]
+
+    ];
+
+
+    details.forEach(([label, value]) => {
+
+        const p = document.createElement("p");
+
+        p.textContent = label + ": " + value;
+
+        box.appendChild(p);
+
     });
-}
 
-displayComplaints();
+    result.appendChild(box);
+
+}
 
 </script>
 
