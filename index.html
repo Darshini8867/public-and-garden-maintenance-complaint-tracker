@@ -303,11 +303,29 @@ document.getElementById("complaintForm")
             .insert([complaint]);
 
         if (error) throw error;
+        message.textContent =
+    "Complaint submitted successfully! Your ID is: " + id;
+
+this.reset();
+
+document.getElementById("searchId").value = id;
+
+document.getElementById("result").innerHTML =
+    "<div class='complaint'>" +
+    "<h3>Complaint Submitted Successfully!</h3>" +
+    "<p><b>Complaint ID:</b> " + id + "</p>" +
+    "<p><b>Status:</b> Pending</p>" +
+    "</div>";
+
+document.getElementById("track").scrollIntoView({
+    behavior: "smooth"
+});
 
         message.textContent =
             "Complaint submitted successfully! Your ID is: " + id;
 
         this.reset();
+        
 
     } catch (error) {
         console.error(error);
