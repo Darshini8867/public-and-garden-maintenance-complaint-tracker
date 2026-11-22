@@ -226,6 +226,96 @@ footer {
 <script>
 
 let complaints = JSON.parse(
+    
+const SUPABASE_URL = "https://mtsivbewuevolcvmeuxz.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_gm88pauw1IXNhdOTgL7IUQ_2lBntGF1";
+
+const db = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+document.getElementById("complaintForm")
+.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const message = document.getElementById("message");
+    message.textContent = "Submitting complaint...";
+
+    const photo = document.getElementById("photo").files[0];
+    const video = document.getElementById("video").files[0];
+
+    const maxSize = 50 * 1024 * 1024;
+
+    if (photo && (!photo.type.startsWith("image/") ||
+                  photo.size > maxSize)) {
+        message.textContent = "Please select a valid photo under 50 MB.";
+        return;
+    }
+
+    if (video && (!video.type.startsWith("video/") ||
+                  video.size > maxSize)) {
+        message.textContent = "Please select a valid video under 50 MB.";
+        return;
+    }
+
+    const id = "PARK" + Date.now();
+    let photoPath = null;
+    let videoPath = null;
+
+    try {
+        if (photo) {
+            const path = id + "/photo-" + photo.name;
+
+            const { error } = await db.storage
+                .from("park-complaints")
+                .upload(path, photo);
+
+            if (error) throw error;
+            photoPath = path;
+        }
+
+        if (video) {
+            const path = id + "/video-" + video.name;
+
+            const { error } = await db.storage
+                .from("park-complaints")
+                .upload(path, video);
+
+            if (error) throw error;
+            videoPath = path;
+        }
+
+        const complaint = {
+            id: id,
+            name: document.getElementById("name").value,
+            location: document.getElementById("location").value,
+            category: document.getElementById("category").value,
+            description: document.getElementById("description").value,
+            photo_url: photoPath,
+            video_url: videoPath,
+            status: "Pending"
+        };
+
+        const { error } = await db
+            .from("complaints")
+            .insert([complaint]);
+
+        if (error) throw error;
+
+        message.textContent =
+            "Complaint submitted successfully! Your ID is: " + id;
+
+        this.reset();
+
+    } catch (error) {
+        console.error(error);
+        message.textContent =
+            "Submission failed. Please try again.";
+    }
+});
+
     localStorage.getItem("complaints") || "[]"
 );
 
