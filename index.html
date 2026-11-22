@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -380,7 +379,7 @@ document.getElementById("complaintForm")
                 crypto.randomUUID() + "." + extension;
 
             const { error } = await db.storage
-                .from("park-complaints")
+                .from("public park and garden maintenance complaint tracker")
                 .upload(photoPath, photo);
 
             if (error) throw error;
@@ -397,7 +396,7 @@ document.getElementById("complaintForm")
                 crypto.randomUUID() + "." + extension;
 
             const { error } = await db.storage
-                .from("park-complaints")
+                .from("public park and garden maintenance complaint tracker")
                 .upload(videoPath, video);
 
             if (error) throw error;
