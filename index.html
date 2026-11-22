@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Park & Garden Complaint Tracker</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f7f0;
+    color: #263b2b;
+}
+
+header {
+    background: #176b3a;
+    color: white;
+    padding: 22px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 27px;
+}
+
+nav {
+    background: #104d2a;
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 12px;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    padding: 55px 20px;
+    background: linear-gradient(120deg, #c7edc7, #e6f5df);
+}
+
+.hero h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+    color: #176b3a;
+}
+
+.hero p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 750px;
+    margin: 30px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #00000015;
+}
+
+h2 {
+    color: #176b3a;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin: 13px 0 7px;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    background: #176b3a;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 15px;
+}
+
+button:hover {
+    background: #104d2a;
+}
+
+.complaint {
+    background: #f0f7f0;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 8px;
+    border-left: 5px solid #176b3a;
+}
+
+.complaint p {
+    margin: 7px 0;
+}
+
+footer {
+    background: #104d2a;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 35px;
+}
+
+@media(max-width:600px) {
+    header h1 {
+        font-size: 21px;
+    }
+    nav a {
+        display: inline-block;
+        margin: 7px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌳 Green Park & Garden Care</h1>
+    <p>Public Park and Garden Maintenance Complaint Tracker</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#complaint">Submit Complaint</a>
+    <a href="#track">Track Complaint</a>
+</nav>
+
+<section class="hero" id="home">
+    <h2>Keep Our Parks Clean and Green!</h2>
+    <p>
+        Help us maintain beautiful public parks and gardens.
+        Report problems and track your complaints easily.
+    </p>
+</section>
+
+<section class="container" id="complaint">
+    <h2>📝 Submit a Complaint</h2>
+
+    <form id="complaintForm">
+
+        <label>Your Name</label>
+        <input type="text" id="name" required
+        placeholder="Enter your name">
+
+        <label>Park Name / Location</label>
+        <input type="text" id="location" required
+        placeholder="Enter park name or location">
+
+        <label>Complaint Category</label>
+        <select id="category" required>
+            <option value="">Select complaint</option>
+            <option>Garbage Disposal</option>
+            <option>Damaged Playground Equipment</option>
+            <option>Broken Benches</option>
+            <option>Water Leakage</option>
+            <option>Damaged Plants</option>
+            <option>Unclean Garden</option>
+            <option>Broken Street Lights</option>
+            <option>Other</option>
+        </select>
+
+        <label>Describe the Problem</label>
+        <textarea id="description" rows="4"
+        required placeholder="Explain the problem"></textarea>
+
+        <button type="submit">Submit Complaint</button>
+
+    </form>
+    <p id="message"></p>
+</section>
+
+<section class="container" id="track">
+    <h2>🔍 Track Complaints</h2>
+
+    <input type="text" id="searchId"
+    placeholder="Enter your complaint ID">
+
+    <button onclick="trackComplaint()">Track Complaint</button>
+
+    <div id="result"></div>
+</section>
+
+<section class="container">
+    <h2>📋 Admin Dashboard</h2>
+    <p>View submitted complaints and update their status.</p>
+    <div id="complaintList"></div>
+</section>
+
+<footer>
+    <p>© 2026 Green Park & Garden Care</p>
+    <p>Working Together for a Cleaner and Greener Environment 🌱</p>
+</footer>
+
+<script>
+
+let complaints = JSON.parse(
+    localStorage.getItem("complaints") || "[]"
+);
+
+function saveComplaints() {
+    localStorage.setItem(
+        "complaints",
+        JSON.stringify(complaints)
+    );
+}
+
+document.getElementById("complaintForm")
+.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    let complaint = {
+        id: "PARK" + Date.now(),
+        name: document.getElementById("name").value,
+        location: document.getElementById("location").value,
+        category: document.getElementById("category").value,
+        description: document.getElementById("description").value,
+        status: "Pending"
+    };
+
+    complaints.push(complaint);
+    saveComplaints();
+
+    document.getElementById("message").innerHTML =
+        "Complaint submitted successfully! Your ID is: " +
+        complaint.id;
+
+    this.reset();
+    displayComplaints();
+});
+
+function trackComplaint() {
+
+    let id = document.getElementById("searchId").value.trim();
+
+    let complaint = complaints.find(
+        c => c.id === id
+    );
+
+    let result = document.getElementById("result");
+
+    if (complaint) {
+        result.innerHTML = `
+            <div class="complaint">
+                <p><b>Complaint ID:</b> ${complaint.id}</p>
+                <p><b>Location:</b> ${complaint.location}</p>
+                <p><b>Category:</b> ${complaint.category}</p>
+                <p><b>Status:</b> ${complaint.status}</p>
+            </div>
+        `;
+    } else {
+        result.innerHTML =
+            "<p>Complaint not found. Please check your ID.</p>";
+    }
+}
+
+function displayComplaints() {
+
+    let list = document.getElementById("complaintList");
+
+    if (complaints.length === 0) {
+        list.innerHTML = "<p>No complaints submitted yet.</p>";
+        return;
+    }
+
+    list.innerHTML = "";
+
+    complaints.forEach((c, index) => {
+
+        let div = document.createElement("div");
+        div.className = "complaint";
+
+        let details = document.createElement("div");
+        details.textContent =
+            "ID: " + c.id +
+            " | Name: " + c.name +
+            " | Location: " + c.location +
+            " | Category: " + c.category +
+            " | Problem: " + c.description;
+
+        let status = document.createElement("p");
+        status.textContent = "Status: " + c.status;
+
+        let select = document.createElement("select");
+
+        ["Pending", "In Progress", "Resolved"].forEach(s => {
+            let option = document.createElement("option");
+            option.value = s;
+            option.textContent = s;
+            select.appendChild(option);
+        });
+
+        select.value = c.status;
+
+        select.addEventListener("change", function() {
+            complaints[index].status = this.value;
+            saveComplaints();
+            displayComplaints();
+        });
+
+        div.appendChild(details);
+        div.appendChild(status);
+        div.appendChild(select);
+
+        list.appendChild(div);
+    });
+}
+
+displayComplaints();
+
+</script>
+
+</body>
+</html>
